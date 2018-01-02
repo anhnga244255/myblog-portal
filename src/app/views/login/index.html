@@ -1,0 +1,25 @@
+<div class="auth-main">
+  <div class="auth-block">
+    <div class="logo"><i class="fa fa-lock"></i></div>
+    <form #loginForm="ngForm" id="loginForm">
+        <div class="form-group row">
+          <input name="email" type="text" [(ngModel)]="user.email" class="form-control field" id="email" maxlength="50" placeholder="{{'Email' | translate}}">
+        </div>
+        <div class="form-group row">
+          <div class="feedback-right">
+            <span class="form-control-feedback fa fa-{{isShowPassword ? 'eye' : 'eye-slash'}} show-password"
+                  (click)="showPassword()"></span>
+            <input [(ngModel)]="user.password" type="password" name="password" id="password" maxlength="50"
+                    class="form-control field" placeholder="{{'Password' | translate}}">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+          <button class="btn btn-lg btn-block btn-primary" (click)="login()">{{'Log in' |translate}}</button>
+        </div>
+        <div class="form-group row text-center ">
+            <a routerLink="/forgot-password">{{'Forgot password?' | translate}}</a>
+        </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,263 @@
+<div class="row-content feedback">
+    <!--PAGE TITLE-->
+    <div class="content-header clearfix">
+        <div class="pull-left">
+            <h3 class="page-header"><span>{{pageTitle | translate}}</span>
+            </h3>
+        </div>
+    </div>
+    <div class="content-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <div class="search auto-size">
+                        <i class="fa fa-search"></i>
+                        <input id="searchInput" name="key" placeholder="{{'Search' | translate}}" type="text" [(ngModel)]="search.key"
+                                (keyup.enter)="filter($event)">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-8 align-right">
+                <div class="form-group">
+                    <a (click)="showHideUserFromModal()" class="btn btn-create ">
+                        <i class="fa fa-plus"></i> {{'Add new' | translate}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="clear-both"></div>
+        <div class="table-responsive">
+            <table class="table table-striped condo-manager">
+                <thead>
+                <tr>
+                    <th>{{'Full name' | translate}}</th>
+                    <th>{{'Phone number' | translate}}</th>
+                    <th>{{'Email' | translate}}</th>
+                    <th class="text-center th-action" colspan="2">{{'Actions' | translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of users | paginate: {id: 'pagination', itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: totalItems }; let index = index">
+                    <td>{{item.firstName}} {{item.lastName}}</td>
+                    <td>{{item.phoneNumber}}</td>
+                    <td>{{item.email}}</td>
+                    <td class="text-center actions">
+                        <i (click)="showHideUserFromModal(true, item)" class="fa fa-pencil-square text-primary"></i>
+                        <i (click)="delete(item.id)" class="fa fa-minus-circle text-danger"></i>
+                        <!-- <i (click)="createUserExistRole(item)" class="fa fa-user-circle" title="Create User"></i> -->
+                    </td>
+                </tr>
+                <tr *ngIf="!totalItems">
+                    <td colspan="11">
+                        <p>{{'No Results Display' | translate}}</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="content-footer">
+        <div class="text-center clearfix">
+            <pagination-controls id="pagination"
+                                 (pageChange)="pageChanged($event)" directionLinks="true" autoHide="true">
+            </pagination-controls>
+        </div>
+    </div>
+</div>
+
+<!--create, edit form-->
+<div bsModal #createEditModal="bs-modal" class="modal fade" [config]="{ignoreBackdropClick: true}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!--Modal header-->
+            <div class="modal-header">
+                <div class="pull-left">
+                    <h4 class="modal-title pull-left" *ngIf = "!user.id">{{'Add' | translate}}</h4>
+                    <h4 class="modal-title pull-left" *ngIf = "user.id">{{'Edit' | translate}}</h4>
+
+                </div>
+                <div class="pull-right">
+                    <button type="button" class="close pull-right" (click)="showHideUserFromModal(false)"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <!--Modal body-->
+            <div class="modal-body">
+                <form #formAction="ngForm" id="formAction">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'First name' | translate}}:<span
+                                        class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7">
+                                <input type="text" name="firstName" id="firstName" class="form-control"
+                                        [(ngModel)]="user.firstName"
+                                        placeholder="{{'First name' | translate}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Last name' | translate}}:<span
+                                        class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-7 col-md-7">
+                                <input type="text" name="lastName" id="lastName" class="form-control"
+                                        [(ngModel)]="user.lastName"
+                                        placeholder="{{'Last name' | translate}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Phone number' | translate}}:</label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="text" name="phone" id="phone" class="form-control"
+                                        [(ngModel)]="user.phone"
+                                        placeholder="{{'Phone number' | translate}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Email' | translate}}:<span class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <input type="text" name="email" id="email" class="form-control"
+                                        [(ngModel)]="user.email"
+                                        [disabled]="user.id"
+                                        placeholder="{{'Email' | translate}}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Country' | translate}}:<span class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <select name="country" id="country" class="form-control" [(ngModel)]="user.country" (change)="selectedCountry($event)">
+                                    <option value="">{{'select'| translate}}</option>
+                                    <option *ngFor = "let item of countrys" [value]="item.code">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf = "user.country">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'State' | translate}}:<span class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <select name="state" id="state" class="form-control" (change) = "selectedState($event)" [(ngModel)]="user.state" >
+                                    <option value="">{{'select'| translate}}</option>
+                                    <option *ngFor = "let item of states" [value]="item">{{item}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf = "user.state && user.country != COUNTRY_VIET_NAME">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Province' | translate}}:<span class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <select name="province" id="province" class="form-control" [(ngModel)]="user.province">
+                                    <option value="">{{'select'| translate}}</option>
+                                    <option *ngFor = "let item of provinces" [value]="item">{{item}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Password' | translate}}:<span class="label-required" *ngIf="!user.id"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="feedback-right">
+                                    <span class="form-control-feedback fa fa-{{isShowPassword ? 'eye' : 'eye-slash'}} show-password"
+                                            (click)="showPassword()"></span>
+                                    <input type="password" name="password" id="password" maxlength="50"
+                                            [(ngModel)]="user.password"
+                                            class="form-control" placeholder="{{'Password' | translate}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Password Again' | translate}}:<span class="label-required" *ngIf="!user.id"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="feedback-right">
+                                    <span class="form-control-feedback fa fa-{{isShowPasswordAgain ? 'eye' : 'eye-slash'}} show-password"
+                                            (click)="showPasswordAgain()"></span>
+                                    <input type="password" name="passwordAgain" id="passwordAgain" maxlength="50"
+                                            [(ngModel)]="user.passwordAgain"
+                                            class="form-control" placeholder="{{'Password Again' | translate}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'Role' | translate}}:<span class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <select name="roleId" id="roleId" class="form-control" (change) = "selectedRole($event)" [(ngModel)] = "user.roleId">
+                                    <option value="">{{'select'| translate}}</option>
+                                    <option *ngFor = "let item of roles" [value]="item.id">{{item.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="user.roleId == ROLE.OPERATOR || user.roleId == ROLE.PRESENTER">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title">
+                                <label>{{'User Parent' | translate}}:<span class="label-required"> *</span></label>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <select name="parentId" id="parentId" class="form-control" [(ngModel)]="user.parentId">
+                                    <option value="">{{'select'| translate}}</option>
+                                    <option *ngFor = "let item of users" [value]="item.id">{{item.firstName}} {{item.lastName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="user.roleId == ROLE.PRESENTER">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4 lbl-title target-wrapper">
+                                    <table class="table-responsive text-left floor-stack-table" [ngStyle]="{width: (tags && tags.length > 0)? tags.length *140+'px' : 0 + 'px'}">
+                                            <tbody><tr>
+                                                <!--template bindings={}--><td *ngFor = "let item of tags">
+                                                    <span class="target-floor-stack">{{item.name}}</span>
+                                                    <input type="checkbox" (click) = "checkedTag(item.id)" [checked] = "isTagsChecked(item.id)">
+                                                </td>
+                                            </tr>
+                                        </tbody></table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--Modal footer-->
+            <div class="modal-footer">
+                <div class="text-center">
+                    <a class="btn btn-cancel" *ngIf="!user.id" (click)="showHideUserFromModal(false)">{{"Cancel" | translate}}</a>
+                    <a class="btn btn-create" *ngIf="!user.id" (click)="create()"><i class="fa fa-save"></i> {{'Create' | translate}}</a>
+                    <a class="btn btn-create" *ngIf="user.id" (click)="update()"><i class="fa fa-save"></i> {{"Save" | translate}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

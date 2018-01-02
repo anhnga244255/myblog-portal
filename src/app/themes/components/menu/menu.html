@@ -1,0 +1,24 @@
+<ul id="al-sidebar-list" class="al-sidebar-list">
+  <menu-item
+    [menuItem]="item"
+    (itemHover)="hoverItem($event)"
+    (toggleSubMenu)="toggleSubMenu($event)"
+    *ngFor="let item of menuItems">
+  </menu-item>
+
+  <li class="al-sidebar-list-item">
+    <a class="al-sidebar-list-link" [routerLink]="['/admin/accounts']" >
+      <i class="fa fa-user"></i><span *ngIf="!isMenuCollapsed">{{_t("Profile")}}</span>
+      <!-- <li class="dropdown-item"><a [routerLink]="['/admin/accounts']" ><i class="fa fa-user"></i>{{_t('Profile')}}</a></li> -->
+    </a>
+  </li>
+  <li class="al-sidebar-list-item">
+    <a class="al-sidebar-list-link" (click)="logout()">
+      <i class="fa fa-sign-out"></i><span *ngIf="!isMenuCollapsed">{{_t("Sign out")}}</span>
+    </a>
+  </li>
+</ul>
+
+<div class="sidebar-hover-elem" [ngStyle]="{top: hoverElemTop + 'px', height: hoverElemHeight + 'px'}"
+     [ngClass]="{'show-hover-elem': showHoverElem }">
+</div>

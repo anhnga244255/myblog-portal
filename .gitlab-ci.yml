@@ -1,0 +1,67 @@
+
+# Required
+image: docker:latest
+services:
+    - docker:dind
+# --------
+
+stages:
+    - build
+    - release
+    - deploy
+
+.build: &build_template
+    stage: build
+    image: vothanhkiet/alpine-node-builder:6.9.5
+    script:
+        - npm install --quiet
+        - npm run build:prod
+    cache:
+        untracked: true
+        key: "$CI_JOB_STAGE/$CI_COMMIT_REF_NAME"
+        paths:
+            - node_modules/
+    artifacts:
+        name: archive
+        expire_in: 1 week
+        paths:
+            - dist/
+
+build:
+    <<: *build_template
+    only:
+        - develop
+
+.release: &release_template
+    stage: release
+    before_script:
+        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    script:
+        - docker build -t $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME --rm=true .
+        - docker push $CI_REGISTRY_IMAGE:$CI_BUILD_REF_NAME
+
+release:
+    <<: *release_template
+    only:
+        - develop
+
+.deploy: &deploy_template
+    stage: deploy
+    image: vothanhkiet/alpine-node:7.2.1
+    before_script:
+        - eval $(ssh-agent -s)
+        - mkdir -p ~/.ssh
+        - echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_rsa
+        - chmod 400 ~/.ssh/id_rsa
+        - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    script:
+        - echo "Deploy to staging server"
+        - ssh $VENTUSO_PC3_USER@$VENTUSO_PC3_IP "mkdir -p $DEPLOY_FOLDER && cd $DEPLOY_FOLDER && curl $DEPLOY_PLAN > docker-compose.yaml && docker-compose pull && docker-compose down && docker-compose up -d"
+
+deploy_develop:
+    <<: *deploy_template
+    variables:
+        DEPLOY_FOLDER: ~/projects/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME
+        DEPLOY_PLAN: $DEV_DEPLOY_PLAN
+    only:
+        - develop

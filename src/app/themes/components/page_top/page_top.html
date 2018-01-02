@@ -1,0 +1,20 @@
+<div class="page-top clearfix">
+  <a  (click)="toggleMenu()" class="collapse-menu-link fa fa-bars"></a>
+  <div class="logo">
+    <a routerLink="/" class="al-logo clearfix">
+      <img class="icon-leia" src="assets/images/logo.png">
+    </a>
+  </div>
+  <div class="user-profile clearfix">
+      <div class="dropdown al-user-profile">
+        <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+         <img [src]="AVATAR_DEFAULT">
+        </a>
+        <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+          <li class="dropdown-item"><a [routerLink]="['/admin/accounts']" ><i class="fa fa-user"></i>{{_t('Profile')}}</a></li>
+          <li class="dropdown-item"><a (click)="logout()" class="signout"><i class="fa fa-power-off"></i>{{_t('Sign out')}}</a></li>
+        </ul>
+      </div>
+    </div>
+  <msg-center></msg-center>
+</div>

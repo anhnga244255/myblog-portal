@@ -1,0 +1,170 @@
+<div class="row-content my-profile">
+  <div class="content-header clearfix">
+    <div class="pull-left">
+      <h3 class="page-header"><span><i class="fa fa-users"></i> {{pageTitle | translate}}</span></h3>
+    </div>
+  </div>
+
+  <div class="content-body">
+    <div class="col-sm-12 col-md-3">
+      <img src="{{user.avatarUrl}}" class="avatar" >
+    </div>
+    <div class="col-sm-12 col-md-9">
+      <div class="table-responsive">
+        <table class="table table-no-borders">
+          <tr>
+            <td class="text-left col-sm-3">{{"First name" | translate}}:</td>
+            <td class="col-sm-9"><strong>{{user.firstName}}</strong></td>
+          </tr>
+          <tr>
+            <td class="text-left col-sm-3">{{"Last name" | translate}}:</td>
+            <td class="col-sm-9"><strong>{{user.lastName}}</strong></td>
+          </tr>
+          <tr>
+            <td class="text-left col-sm-3">{{"Email" | translate}}:</td>
+            <td class="col-sm-9"><strong>{{user.email}}</strong></td>
+          </tr>
+          <tr>
+            <td class="text-left col-sm-3">{{"Phone number" | translate}}:</td>
+            <td class="col-sm-9"><strong>{{user.phoneNumber}}</strong></td>
+          </tr>
+        </table>
+      </div>
+      <div class="form-group form-actions">
+        <button class="btn btn-create" (click)="showHideUserFormModal(true)"><i class="fa fa-pencil"></i> {{"Edit profile" | translate}}</button>
+        <button class="btn btn-create" (click)="showHideChangePasswordFormModal(true)"><i class="fa fa-lock"></i> {{"Change password" | translate}}</button>
+      </div>
+    </div>
+    <div class="clear-both"></div>
+  </div>
+</div>
+
+<div bsModal #userFormModal="bs-modal" class="modal fade" [config]="{ignoreBackdropClick: true}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!--Modal header-->
+      <div class="modal-header">
+        <div class="pull-left">
+          <h4 class="modal-title pull-left">{{"Edit profile" | translate}}</h4>
+        </div>
+
+        <div class="pull-right">
+          <button type="button" class="close pull-right" (click)="showHideUserFormModal(false)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      <!--Modal body-->
+      <div class="modal-body">
+        <form #formUser="ngForm" id="formUser">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>{{'First name' | translate}}:<span class="label-required"> *</span></label><br>
+                <input type="text" name="firstName" class="form-control" [(ngModel)]="user.firstName" maxlength="50"
+                       placeholder="{{'First Name' | translate}}">
+              </div>
+              <div class="form-group">
+                <label>{{'Last name' | translate}}:<span class="label-required"> *</span></label><br>
+                <input type="text" name="lastName" class="form-control" [(ngModel)]="user.lastName" maxlength="50"
+                       placeholder="{{'Last Name' | translate}}">
+              </div>
+              <div class="form-group">
+                <label>{{'Email' | translate}}:<span class="label-required"> *</span></label>
+                <input type="email" name="email" class="form-control" [(ngModel)]="user.email" maxlength="50" readonly
+                       placeholder="{{'Email' | translate}}">
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>{{'Phone number' | translate}}:</label>
+                <input type="tel" name="phoneNumber" class="form-control" [(ngModel)]="user.phoneNumber" maxlength="20"
+                       placeholder="{{'Phone' | translate}}">
+              </div>
+
+              <div class="form-group">
+                <label>{{'Avatar' | translate}}:</label>
+                <input type="file" class="form-control" id="avatarUrl" name="avatarUrl" (change)="onFileSelected($event)" >
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!--Modal footer-->
+      <div class="modal-footer">
+        <div class="text-center">
+          <a class="btn btn-cancel" (click)="showHideUserFormModal(false)">{{ "Cancel" | translate}}</a>
+          <a class="btn btn-create" (click)="updateProfile()">{{ "Update" | translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #changePasswordFormModal="bs-modal" class="modal fade" [config]="{ignoreBackdropClick: true}">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+
+      <!--Modal header-->
+      <div class="modal-header">
+        <div class="pull-left">
+          <h4 class="modal-title pull-left">{{'Change Password' | translate}}</h4>
+        </div>
+
+        <div class="pull-right">
+          <button type="button" class="close pull-right" (click)="showHideChangePasswordFormModal(false)" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      <!--Modal body-->
+      <div class="modal-body">
+        <form #formUser="ngForm" id="formChangePassword">
+          <div class="row">
+            <div class="col-sm-12">
+
+              <div class="form-group has-feedback has-default">
+                <label>{{'Old Password' | translate}}:<span class="label-required"> *</span></label>
+                <div class="feedback-right">
+                  <span class="form-control-feedback fa fa-{{isShowOldPassword ? 'eye' : 'eye-slash'}} show-password" (click)="showOldPassword()"></span>
+                  <input [(ngModel)]="user.oldPassword" type="password" name="oldPassword" id="oldPassword" maxlength="50"
+                         class="form-control" placeholder="{{'Old Password' | translate}}">
+                </div>
+              </div>
+
+              <div class="form-group has-feedback has-default">
+                <label>{{'New Password' | translate}}:<span class="label-required"> *</span></label>
+                <div class="feedback-right">
+                  <span class="form-control-feedback fa fa-{{isShowPassword ? 'eye' : 'eye-slash'}} show-password" (click)="showPassword()"></span>
+                  <input [(ngModel)]="user.newPassword" type="password" name="newPassword" id="password" maxlength="50"
+                         class="form-control" placeholder="{{'New Password' | translate}}">
+                </div>
+              </div>
+
+              <div class="form-group has-feedback has-default">
+                <label>{{'Password Again' | translate}}:<span class="label-required"> *</span></label>
+                <div class="feedback-right">
+                  <span class="form-control-feedback fa fa-{{isShowPasswordAgain ? 'eye' : 'eye-slash'}} show-password" (click)="showPasswordAgain()"></span>
+                  <input [(ngModel)]="user.passwordAgain" type="password" name="passwordAgain" id="passwordAgain" maxlength="50"
+                         class="form-control" placeholder="{{'Password Again' | translate}}">
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!--Modal footer-->
+      <div class="modal-footer">
+        <div class="text-center">
+          <a class="btn btn-create" (click)="changePassword()">{{ "Save" | translate}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

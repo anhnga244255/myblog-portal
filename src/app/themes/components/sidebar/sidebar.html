@@ -1,0 +1,30 @@
+<aside class="al-sidebar">
+  <div class="row profile-info" *ngIf="!isMenuCollapsed">
+    <div class="col-sm-12 col-md-5 col-xs-4 custom-avatar-padding">
+        <a href="#"  [routerLink]="['/admin/accounts']" class="rounded-image profile-image">
+          <img [src]="AVATAR_DEFAULT"/>
+        </a>
+    </div>
+    <div class="col-sm-12 col-md-7 col-xs-8 custom-cm-name-padding">
+      <div class="content-sidebar">
+        <p>{{_t("welcome")}},</p>
+        <p><a href="#"  [routerLink]="['/admin/accounts']" class="profile-name"><span>{{profile?.firstName}}</span></a></p>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <menu [menuRoutes]="routes"
+           [sidebarCollapsed]="isMenuCollapsed"
+           (expandMenu)="menuExpand()"></menu>
+  <hr>
+  <div class="language text-center" *ngIf="!isMenuCollapsed">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle language-button" type="button" data-toggle="dropdown">{{currentLanguage?.name}}
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let item of languages"><a (click)="changeLanguage(item)">{{item.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+
+</aside>

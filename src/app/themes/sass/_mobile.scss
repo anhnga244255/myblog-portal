@@ -1,0 +1,259 @@
+@import '../sass/conf/conf';
+
+@media screen and (max-width: 1600px) {
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  html {
+    overflow: hidden;
+    height: 100%;
+  }
+  body {
+    overflow: auto;
+    height: 100%;
+  }
+}
+
+@media (max-width: $resXXL) {
+  .page-top{
+    padding-left: 15px;
+  }
+  a.al-sidebar-list-link{
+    margin-left: 5px;
+  }
+  .al-msg-center{
+    margin-right: 20px;
+  }
+  a.refresh-data {
+    margin-right: 10px;
+  }
+  a.collapse-menu-link {
+    //margin-left: 10px;
+  }
+
+  .al-skin-dropdown {
+    display: none;
+  }
+
+}
+
+@media (max-width: $resXL) {
+
+  .page-top {
+    display: block;
+    padding-left: 5px;
+  }
+
+  a.collapse-menu-link {
+    display: block;
+  }
+
+  @include sidebar-overlap();
+  .al-sidebar {
+    top: $top-height;
+  }
+
+  a.al-logo{
+    span{
+      margin-left: 15px;
+    }
+  }
+
+  .small-screen-noti{
+    display: block;
+    li a i{
+      font-size: 12px;
+    }
+
+    .msg-list span{
+      font-size: 10px;
+    }
+
+    .msg-list img {
+      width: 20px;;
+    }
+  }
+
+  .large-screen-noti{
+    display: none;
+  }
+
+}
+
+@media (max-width: $resL) {
+
+}
+
+@media (max-width: $resM) {
+  .row-content{
+    padding: 30px 0;
+  }
+  .row-content{
+    padding: 30px 0;
+  }
+  a.al-logo{
+    line-height: 0;
+    display: inline-block;
+    margin-top: 10px;
+    img{
+      height: 45px;
+      float: left;
+      margin-right: 10px;
+    }
+    span{
+      font-size: 20px;
+      margin-top: 20px;
+      float: left;
+    }
+  }
+  a.collapse-menu-link{
+    float: left;
+  }
+
+  .page-header span{
+    font-size: 20px;
+    padding-right: 50px;
+  }
+  .al-content{
+    padding: 0 20px;
+  }
+
+}
+
+@media (max-width: $resS) {
+  @include sidebar-overlap();
+  .search {
+    display: none;
+  }
+  a.al-logo{
+    span{
+      margin-top: 5px;
+      margin-left: 5px;
+    }
+
+  }
+  .top-dropdown-menu{
+    left: 0;
+  }
+}
+
+@media (max-width: $resXS) {
+  .menu-collapsed {
+    @include sidebar-hidden();
+  }
+  .al-main {
+    margin-left: 0;
+  }
+  .al-footer {
+    padding-left: 0;
+  }
+  .top-dropdown-menu{
+    left: -105px;
+  }
+}
+
+@media (max-width: $resXXS) {
+  .al-content {
+    padding: 8px 20px;
+  }
+  .page-top {
+    padding: 0 20px;
+  }
+  a.collapse-menu-link {
+    display: block;
+  }
+  a.refresh-data {
+    margin-right: 10px;
+  }
+  a.collapse-menu-link {
+    //margin-left: 10px;
+  }
+
+  .al-skin-dropdown {
+    display: none;
+  }
+  .page-top {
+    img {
+      display: block !important;
+    }
+  }
+  a.collapse-menu-link {
+    display: block;
+  }
+  
+  a.refresh-data {
+    margin-right: 10px;
+  }
+  a.collapse-menu-link {
+    //margin-left: 10px;
+  }
+
+  .al-skin-dropdown {
+    display: none;
+  }
+  .al-msg-center {
+    margin-right: 20px;
+    li {
+      margin-left: 20px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+  a.al-logo{
+    span {
+      font-size: 17px;
+    }
+  }
+
+}
+
+@media (max-width: $resMin) {
+  a.al-logo {
+    span{
+      font-size:15px;
+      margin-left: 2px;
+    }
+  }
+  .top-dropdown-menu{
+    left: -65px;
+    width: 300px;
+  }
+  .page-header{
+    span{
+      font-size: 17px;
+    }
+  }
+
+}
+
+@media (max-width: $resXL) and (min-width: $resXS) {
+  .menu-collapsed {
+    @include sidebar-collapsed();
+  }
+  @include layout-collapsed();
+
+}
+
+@media screen and (max-width: $resXS) {
+  .page-top {
+    padding: 0 20px;
+  }
+
+}
+
+@media screen and (min-width: 770px){
+  .dashboard {
+    .block {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 760px){
+  .dashboard {
+    .block {
+      margin-bottom: 20px;
+    }
+  }
+}

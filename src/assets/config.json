@@ -1,0 +1,42 @@
+{
+  "rest": {
+    "apiUrl": "http://localhost:3000/api/v1",
+    "mediaUrl": "https://vivis-dev-media.ventuso.net"
+  },
+  "system": {
+    "applicationName": "APP_NAME",
+    "applicationUrl": ""
+  },
+  "seo": {
+    "defaultPageTitle": "DEFAULT_TITLE",
+    "pageTitlePositioning": 10,
+    "pageTitleSeparator": " | ",
+    "defaultMetaDescription": "DEFAULT_META_DESCRIPTION",
+    "defaultMetaKeyword": "DEFAULT_META_KEYWORD",
+    "defaultMetaImage": "DEFAULT_META_IMAGE"
+  },
+  "i18n": {
+    "defaultLanguage": {
+      "code": "en",
+      "name": "English",
+      "culture": "en-US"
+    },
+    "availableLanguages": [
+      {
+        "code": "en",
+        "name": "English",
+        "culture": "en-US"
+      },
+      {
+        "code": "vi",
+        "name": "Vietnamese",
+        "culture": "vi-VN"
+      }
+    ],
+    "autoDetectLanguage": true,
+    "useLocalizedRoutes": true
+  },
+  "social": {
+    "facebookAppId": "193868394431775"
+  }
+}

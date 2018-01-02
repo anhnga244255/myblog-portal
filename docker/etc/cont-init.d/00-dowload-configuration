@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv sh
+echo "Download setting from ${CONFIG_URL}"
+
+if [ -n "$CONFIG_URL" ]; then
+    curl ${CONFIG_URL} > /assets/config.json
+else
+    echo "Config URL was not found. Skip"
+fi
